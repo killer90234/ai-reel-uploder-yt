@@ -1,0 +1,22 @@
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Credentials
+credentials/
+*.json
+!requirements.txt
+
+# Logs
+logs/
+*.log
+
+# Temp files
+temp/
+__pycache__/
+*.pyc
+*.pyo
+
+# OpenClaude
+.openclaude/
