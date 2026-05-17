@@ -10,14 +10,14 @@ logger = logging.getLogger(__name__)
 
 class UploadScheduler:
     def __init__(self):
-        self.scheduler = BackgroundScheduler(timezone="UTC")
+        self.scheduler = BackgroundScheduler(timezone="Asia/Kolkata")
         self._setup_jobs()
 
     def _setup_jobs(self):
         for idx, time_str in enumerate(settings.upload_times_list):
             try:
                 hour, minute = time_str.split(":")
-                trigger = CronTrigger(hour=int(hour), minute=int(minute), timezone="UTC")
+                trigger = CronTrigger(hour=int(hour), minute=int(minute), timezone="Asia/Kolkata")
 
                 self.scheduler.add_job(
                     func=self._scheduled_upload,
@@ -26,7 +26,7 @@ class UploadScheduler:
                     name=f"Scheduled Upload {idx + 1} ({time_str})",
                     replace_existing=True,
                 )
-                logger.info(f"Scheduled upload job {idx + 1} at {time_str} UTC")
+                logger.info(f"Scheduled upload job {idx + 1} at {time_str} IST")
             except ValueError as e:
                 logger.error(f"Invalid time format '{time_str}': {e}")
 
