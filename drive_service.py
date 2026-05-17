@@ -13,8 +13,11 @@ from config import settings
 
 logger = logging.getLogger(__name__)
 
-SCOPES = ["https://www.googleapis.com/auth/drive.readonly", "https://www.googleapis.com/auth/drive.file"]
-YOUTUBE_SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
+ALL_SCOPES = [
+    "https://www.googleapis.com/auth/drive",
+    "https://www.googleapis.com/auth/youtube.upload",
+]
+SCOPES = ALL_SCOPES
 
 
 class GoogleDriveService:
