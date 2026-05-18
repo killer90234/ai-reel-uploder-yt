@@ -1,5 +1,6 @@
 import os
 import logging
+import threading
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -23,6 +24,19 @@ async def lifespan(app: FastAPI):
     logger.info("Starting OTA ReelFlow Agent...")
     scheduler_instance.start()
     logger.info(f"Scheduler started with {len(settings.upload_times_list)} jobs")
+
+    def startup_upload():
+        try:
+            logger.info("Startup upload triggered")
+            success, filename, video_id, error = scheduler_instance.trigger_manual_upload()
+            if success:
+                logger.info(f"Startup upload completed: {filename} -> {video_id}")
+            else:
+                logger.warning(f"Startup upload failed: {filename} - {error}")
+        except Exception as e:
+            logger.error(f"Startup upload exception: {e}")
+
+    threading.Thread(target=startup_upload, daemon=True).start()
 
     yield
     logger.info("Shutting down OTA ReelFlow Agent...")
