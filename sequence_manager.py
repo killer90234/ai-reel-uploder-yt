@@ -12,7 +12,8 @@ class SequenceManager:
     VIDEO_PATTERN = re.compile(r"^ota(\d+)\.(mp4|mov|mkv|avi)$", re.IGNORECASE)
 
     def __init__(self):
-        self.last_uploaded_seq: int = logger_service.get_last_uploaded_sequence()
+        log_seq = logger_service.get_last_uploaded_sequence()
+        self.last_uploaded_seq: int = max(log_seq, settings.start_sequence)
         logger.info(f"SequenceManager initialized. Last uploaded sequence: {self.last_uploaded_seq}")
 
     def extract_sequence_number(self, filename: str) -> Optional[int]:
