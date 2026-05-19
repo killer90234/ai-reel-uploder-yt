@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     youtube_refresh_token: str = Field(default="", alias="YOUTUBE_REFRESH_TOKEN")
     google_drive_folder_id: str = Field(default="", alias="GOOGLE_DRIVE_FOLDER_ID")
     upload_times: str = Field(default="09:00,14:00,19:00", alias="UPLOAD_TIMES")
-    start_sequence: int = Field(default=0, alias="START_SEQUENCE")
+
 
     google_credentials_path: str = os.getenv("GOOGLE_CREDENTIALS_PATH", "credentials/google_credentials.json")
     youtube_token_path: str = os.getenv("YOUTUBE_TOKEN_PATH", "credentials/token.json")

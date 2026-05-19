@@ -1,7 +1,6 @@
 import re
 import logging
 from typing import Optional
-from config import settings
 from logger_service import logger_service
 
 
@@ -12,8 +11,7 @@ class SequenceManager:
     VIDEO_PATTERN = re.compile(r"^ota(\d+)\.(mp4|mov|mkv|avi)$", re.IGNORECASE)
 
     def __init__(self):
-        log_seq = logger_service.get_last_uploaded_sequence()
-        self.last_uploaded_seq: int = max(log_seq, settings.start_sequence)
+        self.last_uploaded_seq: int = logger_service.get_last_uploaded_sequence()
         logger.info(f"SequenceManager initialized. Last uploaded sequence: {self.last_uploaded_seq}")
 
     def extract_sequence_number(self, filename: str) -> Optional[int]:
@@ -37,7 +35,7 @@ class SequenceManager:
         valid_files.sort(key=lambda x: x[0])
 
         for seq, filename in valid_files:
-            if seq == uploaded_seq + 1:
+            if seq > uploaded_seq:
                 return seq
 
         return None
