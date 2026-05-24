@@ -52,13 +52,24 @@ class NvidiaAIService:
             return self._generate_fallback(filename)
 
     def _build_prompt(self, filename: str, topic: str, audience: str, style: str) -> str:
+        seq_match = re.search(r"ota(\d+)", filename, re.IGNORECASE)
+        naming_rule = ""
+        if seq_match:
+            seq_num = seq_match.group(1)
+            naming_rule = f"""
+IMPORTANT NAMING RULE: This is episode {seq_num} of the "Otaku" series.
+- The TITLE must be: "Otaku {seq_num}" followed by relevant emoji(s), e.g. "Otaku {seq_num} 🔥" or "Otaku {seq_num} ⚡🎌"
+- The CAPTION must reference Otaku {seq_num} and be anime/otaku themed
+- The HASHTAGS must include otaku/anime related tags like #otaku #anime #animelover #otakulife #manga #weeb #animefan #otakucommunity along with #shorts #viral #trending
+"""
+
         return f"""You are a viral YouTube Shorts content creator. Generate engaging content for the following reel.
 
 Filename: {filename}
 Topic: {topic}
 Target Audience: {audience}
 Style: {style}
-
+{naming_rule}
 Generate exactly this format:
 TITLE: [1 viral YouTube Shorts title with emoji]
 CAPTION: [Short engaging caption, 2-3 lines max]
@@ -118,9 +129,9 @@ Start now."""
         seq_match = re.search(r"ota(\d+)", filename, re.IGNORECASE)
         seq_num = seq_match.group(1) if seq_match else "1"
 
-        title = f"Episode {seq_num} Drops Now 🔥"
-        caption = f"Part {seq_num} of the series. Don't forget to like and subscribe!"
-        hashtags = ["#shorts", "#viral", "#trending", "#fyp", "#explore", "#episode", "#series", "#new", "#reels", "#subscribe"]
+        title = f"Otaku {seq_num} 🔥"
+        caption = f"Otaku {seq_num} - The otaku vibes hit different! Don't forget to like and subscribe for more!"
+        hashtags = ["#shorts", "#viral", "#trending", "#otaku", "#anime", "#animelover", "#otakulife", "#manga", "#weeb", "#animefan"]
 
         return NvidiaAIContent(title=title, caption=caption, hashtags=hashtags)
 
